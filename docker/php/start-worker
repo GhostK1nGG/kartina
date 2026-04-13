@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+
+app_root="/var/www/html"
+
+mkdir -p \
+    "$app_root/storage/logs" \
+    "$app_root/storage/framework/cache" \
+    "$app_root/storage/framework/sessions" \
+    "$app_root/storage/framework/testing" \
+    "$app_root/storage/framework/views" \
+    "$app_root/bootstrap/cache"
+
+touch "$app_root/storage/logs/laravel.log"
+
+chown -R www-data:www-data \
+    "$app_root/storage/logs" \
+    "$app_root/storage/framework" \
+    "$app_root/bootstrap/cache"
+find "$app_root/storage/logs" "$app_root/storage/framework" "$app_root/bootstrap/cache" -type d -exec chmod 775 {} \;
+find "$app_root/storage/logs" "$app_root/storage/framework" "$app_root/bootstrap/cache" -type f -exec chmod 664 {} \;
+
+exec su -s /bin/sh -c "php artisan queue:work --sleep=1 --tries=3 --timeout=90" www-data

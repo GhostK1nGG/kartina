@@ -1,0 +1,10 @@
+.git
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+backups/
+mysql_data/
+
+*.log
