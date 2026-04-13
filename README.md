@@ -50,9 +50,9 @@ docker compose ps
 
 ## Database
 
-- Host: `127.0.0.1`
-- Port: `3307`
-- Database: `laravel`
-- User: `laravel`
-- Password: `laravel`
-- Root password: `root`
+- Host: ``
+- Port: ``
+- Database: ``
+- User: ``
+- Password: ``
+- Root password: ``
