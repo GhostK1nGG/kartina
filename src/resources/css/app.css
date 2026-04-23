@@ -809,8 +809,8 @@ textarea.field{min-height:170px;resize:vertical}
   .hero-cloudmist-left,.hero-cloudmist-right{opacity:.22}
   .hero-beam{opacity:.3}
   .hero-grid{gap:32px}
-  .hero-device{width:100%;min-height:auto;justify-content:flex-start;align-items:center;margin-top:0;padding-left:0;padding-right:0}
-  .hero-phone{width:min(calc(100% - 8px), 350px);height:780px;flex-basis:auto;margin:0;padding:0;transform:translateX(-14px)}
+  .hero-device{width:100%;min-height:auto;justify-content:center;align-items:center;margin-top:0;padding-left:0;padding-right:0}
+  .hero-phone{width:min(calc(100% - 40px), 342px);height:780px;flex-basis:auto;margin:0 auto;padding:0;transform:none}
   .hero-phone-screen{min-height:0}
   .hero-widget-card-compact h3{font-size:22px}
   .contact-flip,.contact-inner{min-height:760px}
@@ -852,8 +852,8 @@ textarea.field{min-height:170px;resize:vertical}
   .hero-cloudbank-front{width:118vw;height:42vw;left:-10vw;bottom:8vh;opacity:.48}
   .hero-cloudmist-left,.hero-cloudmist-right,.hero-cloudglow-bottom{display:none}
   .hero-beam{width:24vw;height:58vh;opacity:.24}
-  .hero-device{width:100%;min-height:auto;align-items:center;justify-content:flex-start;margin-top:0;padding-left:0;padding-right:0}
-  .hero-phone{width:min(calc(100% - 20px), 324px);height:auto;aspect-ratio:362 / 780;flex-basis:auto;margin:0;padding:0;transform:translateX(-20px)}
+  .hero-device{width:100%;min-height:auto;align-items:center;justify-content:center;margin-top:0;padding-left:0;padding-right:0}
+  .hero-phone{width:min(calc(100% - 32px), 316px);height:auto;aspect-ratio:362 / 780;flex-basis:auto;margin:0 auto;padding:0;transform:none}
   .hero-phone-shell{padding:7px;border-radius:42px}
   .hero-phone-shell::before{border-radius:38px}
   .hero-phone-screen{min-height:0;padding:18px;border-radius:36px}
