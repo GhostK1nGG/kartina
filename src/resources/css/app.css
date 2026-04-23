@@ -809,12 +809,15 @@ textarea.field{min-height:170px;resize:vertical}
   .hero-cloudmist-left,.hero-cloudmist-right{opacity:.22}
   .hero-beam{opacity:.3}
   .hero-grid{gap:32px}
-  .hero-device{width:100%;min-height:auto;justify-content:center;align-items:center;margin-top:0;padding-left:0;padding-right:0}
-  .hero-phone{width:min(calc(100% - 8px), 362px);height:780px;flex-basis:auto;margin-right:0;margin-left:auto;margin-right:auto;padding:0}
+  .hero-device{width:100%;min-height:auto;justify-content:flex-start;align-items:center;margin-top:0;padding-left:0;padding-right:0}
+  .hero-phone{width:min(calc(100% - 8px), 350px);height:780px;flex-basis:auto;margin:0;padding:0;transform:translateX(-14px)}
   .hero-phone-screen{min-height:0}
   .hero-widget-card-compact h3{font-size:22px}
-  .contact-flip,.contact-inner{min-height:640px}
+  .contact-flip,.contact-inner{min-height:760px}
   .contact-face,.placeholder-shell{padding:26px}
+  .contact-face{overflow:auto;-webkit-overflow-scrolling:touch}
+  .contact-face form{gap:14px;margin-top:20px}
+  .contact-face form .button{min-height:48px;justify-content:center}
   .about-copy,.about-panel,.about-quote-card,.about-portrait-shell{padding:24px}
   .about-portrait-frame{min-height:440px}
   .about-portrait-overlay{padding:18px 20px}
@@ -849,8 +852,8 @@ textarea.field{min-height:170px;resize:vertical}
   .hero-cloudbank-front{width:118vw;height:42vw;left:-10vw;bottom:8vh;opacity:.48}
   .hero-cloudmist-left,.hero-cloudmist-right,.hero-cloudglow-bottom{display:none}
   .hero-beam{width:24vw;height:58vh;opacity:.24}
-  .hero-device{width:100%;min-height:auto;align-items:center;justify-content:center;margin-top:0;padding-left:0;padding-right:0}
-  .hero-phone{width:min(calc(100% - 14px), 340px);height:auto;aspect-ratio:362 / 780;flex-basis:auto;margin-left:auto;margin-right:auto;padding:0}
+  .hero-device{width:100%;min-height:auto;align-items:center;justify-content:flex-start;margin-top:0;padding-left:0;padding-right:0}
+  .hero-phone{width:min(calc(100% - 20px), 324px);height:auto;aspect-ratio:362 / 780;flex-basis:auto;margin:0;padding:0;transform:translateX(-20px)}
   .hero-phone-shell{padding:7px;border-radius:42px}
   .hero-phone-shell::before{border-radius:38px}
   .hero-phone-screen{min-height:0;padding:18px;border-radius:36px}
@@ -938,9 +941,13 @@ textarea.field{min-height:170px;resize:vertical}
   textarea.field{min-height:150px}
   .project-socials-grid{gap:10px}
   .project-social-link{width:100%;justify-content:flex-start}
-  .contact-flip,.contact-inner{min-height:560px}
-  .contact-face{padding:22px}
-  .contact-front p,.contact-back p{font-size:16px;line-height:1.62}
+  .contact-flip,.contact-inner{min-height:780px}
+  .contact-face{padding:20px 18px;overflow:auto;-webkit-overflow-scrolling:touch}
+  .contact-front p,.contact-back p{font-size:15px;line-height:1.56;margin-top:12px}
+  .contact-front h3,.contact-back h3{font-size:clamp(30px,11vw,40px)}
+  .contact-face form{gap:12px;margin-top:16px}
+  .contact-face form .button{width:100%;justify-content:center}
+  .contact-face textarea.field{min-height:112px}
   .contact-process-step{padding:16px}
   .about-page{padding:46px 0 72px}
   .about-copy,.about-panel,.about-quote-card,.about-portrait-shell{padding:18px}
