@@ -628,6 +628,59 @@ const initRelatedPaintingCards = () => {
     });
 };
 
+const initHeroPhoneLayout = () => {
+    const heroDevice = document.querySelector('.hero-device');
+    const heroPhone = heroDevice?.querySelector('.hero-phone');
+
+    if (!heroDevice || !heroPhone) {
+        return;
+    }
+
+    let frameId = null;
+
+    const syncHeroPhoneLayout = () => {
+        frameId = null;
+
+        const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+
+        if (viewportWidth > 820) {
+            heroDevice.style.removeProperty('--hero-phone-mobile-width');
+            return;
+        }
+
+        const deviceWidth = Math.max(heroDevice.clientWidth, 0);
+        const safeSideSpace = viewportWidth <= 560 ? 30 : 42;
+        const sideButtonAllowance = 12;
+        const maxWidth = viewportWidth <= 560 ? 316 : 342;
+        const minWidth = viewportWidth <= 560 ? 248 : 280;
+        const calculatedWidth = deviceWidth - safeSideSpace - sideButtonAllowance;
+        const nextWidth = Math.max(minWidth, Math.min(maxWidth, calculatedWidth));
+
+        heroDevice.style.setProperty('--hero-phone-mobile-width', `${Math.round(nextWidth)}px`);
+    };
+
+    const requestSyncHeroPhoneLayout = () => {
+        if (frameId !== null) {
+            cancelAnimationFrame(frameId);
+        }
+
+        frameId = window.requestAnimationFrame(syncHeroPhoneLayout);
+    };
+
+    requestSyncHeroPhoneLayout();
+
+    window.addEventListener('resize', requestSyncHeroPhoneLayout, { passive: true });
+    window.visualViewport?.addEventListener('resize', requestSyncHeroPhoneLayout, { passive: true });
+
+    if (typeof ResizeObserver !== 'undefined') {
+        const resizeObserver = new ResizeObserver(() => {
+            requestSyncHeroPhoneLayout();
+        });
+
+        resizeObserver.observe(heroDevice);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     state.locale = document.body.dataset.defaultLocale || 'ru';
     state.currency = localStorage.getItem(storageKeys.currency)
@@ -755,5 +808,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initCatalogModal(imageLightbox);
     initAboutContactsModal();
     initRelatedPaintingCards();
+    initHeroPhoneLayout();
     applyTranslations();
 });
