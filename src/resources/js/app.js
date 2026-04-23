@@ -28,6 +28,14 @@ const state = {
     currency: 'rub',
 };
 
+const syncOverlayState = () => {
+    const hasOpenOverlay = document.querySelector(
+        '.catalog-modal.is-open, .about-contact-modal.is-open, .gallery-modal.is-open, .image-lightbox.is-open',
+    );
+
+    document.body.classList.toggle('has-overlay', Boolean(hasOpenOverlay));
+};
+
 const getCategoryLabel = (slug) => {
     if (!slug) {
         return '';
@@ -148,7 +156,69 @@ const initPreferenceMenus = () => {
     });
 };
 
-const initCatalogModal = () => {
+const initMobileNav = () => {
+    const navShell = document.querySelector('[data-nav-shell]');
+    const toggle = navShell?.querySelector('[data-nav-toggle]');
+    const panel = navShell?.querySelector('[data-nav-panel]');
+
+    if (!navShell || !toggle || !panel) {
+        return;
+    }
+
+    const mobileBreakpoint = window.matchMedia('(max-width: 820px)');
+
+    const closeNav = () => {
+        navShell.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    const toggleNav = () => {
+        const willOpen = !navShell.classList.contains('is-open');
+
+        navShell.classList.toggle('is-open', willOpen);
+        toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    };
+
+    toggle.addEventListener('click', () => {
+        if (!mobileBreakpoint.matches) {
+            return;
+        }
+
+        toggleNav();
+    });
+
+    panel.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+            if (mobileBreakpoint.matches) {
+                closeNav();
+            }
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!mobileBreakpoint.matches) {
+            return;
+        }
+
+        if (!event.target.closest('[data-nav-shell]')) {
+            closeNav();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeNav();
+        }
+    });
+
+    mobileBreakpoint.addEventListener('change', (event) => {
+        if (!event.matches) {
+            closeNav();
+        }
+    });
+};
+
+const initCatalogModal = (imageLightbox = null) => {
     const dataNode = document.getElementById('catalogPaintingsData');
     const modal = document.getElementById('catalogModal');
 
@@ -252,14 +322,14 @@ const initCatalogModal = () => {
         renderModalImage();
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('has-overlay');
+        syncOverlayState();
         applyTranslations(modal);
     };
 
     const closeModal = () => {
         modal.classList.remove('is-open');
         modal.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('has-overlay');
+        syncOverlayState();
     };
 
     document.querySelectorAll('[data-catalog-card]').forEach((card) => {
@@ -295,9 +365,20 @@ const initCatalogModal = () => {
 
     prevButton?.addEventListener('click', () => moveModalGallery('prev'));
     nextButton?.addEventListener('click', () => moveModalGallery('next'));
+    stage?.addEventListener('click', () => {
+        if (!currentPainting) {
+            return;
+        }
+
+        imageLightbox?.open(currentPainting.images, currentImageIndex, currentPainting.title ?? '');
+    });
 
     document.addEventListener('keydown', (event) => {
         if (!modal.classList.contains('is-open')) {
+            return;
+        }
+
+        if (document.getElementById('imageLightbox')?.classList.contains('is-open')) {
             return;
         }
 
@@ -319,6 +400,231 @@ const initCatalogModal = () => {
             event.preventDefault();
             moveModalGallery('next');
         }
+    });
+};
+
+const initImageLightbox = () => {
+    const modal = document.getElementById('imageLightbox');
+
+    if (!modal) {
+        return null;
+    }
+
+    const stage = document.getElementById('imageLightboxStage');
+    const title = document.getElementById('imageLightboxTitle');
+    const counter = document.getElementById('imageLightboxCounter');
+    const thumbs = document.getElementById('imageLightboxThumbs');
+    const prevButton = document.getElementById('imageLightboxPrev');
+    const nextButton = document.getElementById('imageLightboxNext');
+
+    let images = [];
+    let activeIndex = 0;
+    let currentTitle = '';
+    let touchStartX = null;
+
+    const render = () => {
+        const activeImage = images[activeIndex] ?? '';
+        const showNavigation = images.length > 1;
+
+        if (stage) {
+            stage.innerHTML = '';
+
+            if (activeImage !== '') {
+                const image = document.createElement('img');
+                image.className = 'image-lightbox-image';
+                image.src = activeImage;
+                image.alt = currentTitle;
+                stage.appendChild(image);
+            }
+        }
+
+        if (title) {
+            title.textContent = currentTitle;
+        }
+
+        if (counter) {
+            counter.textContent = images.length > 0
+                ? `${String(activeIndex + 1).padStart(2, '0')} / ${String(images.length).padStart(2, '0')}`
+                : '';
+        }
+
+        if (prevButton) {
+            prevButton.hidden = !showNavigation;
+        }
+
+        if (nextButton) {
+            nextButton.hidden = !showNavigation;
+        }
+
+        if (!thumbs) {
+            return;
+        }
+
+        thumbs.innerHTML = '';
+
+        images.forEach((imageUrl, index) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = `image-lightbox-thumb${index === activeIndex ? ' is-active' : ''}`;
+            button.style.backgroundImage = `url('${imageUrl}')`;
+            button.addEventListener('click', () => {
+                activeIndex = index;
+                render();
+            });
+            thumbs.appendChild(button);
+        });
+    };
+
+    const move = (direction) => {
+        if (images.length < 2) {
+            return;
+        }
+
+        if (direction === 'next') {
+            activeIndex = (activeIndex + 1) % images.length;
+        } else {
+            activeIndex = (activeIndex - 1 + images.length) % images.length;
+        }
+
+        render();
+    };
+
+    const open = (nextImages = [], startIndex = 0, nextTitle = '') => {
+        images = Array.isArray(nextImages) ? nextImages.filter(Boolean) : [];
+
+        if (images.length === 0) {
+            return;
+        }
+
+        activeIndex = Math.min(Math.max(startIndex, 0), images.length - 1);
+        currentTitle = nextTitle || '';
+        render();
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        syncOverlayState();
+    };
+
+    const close = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        syncOverlayState();
+    };
+
+    prevButton?.addEventListener('click', () => move('prev'));
+    nextButton?.addEventListener('click', () => move('next'));
+
+    modal.querySelectorAll('[data-close-image-lightbox]').forEach((element) => {
+        element.addEventListener('click', close);
+    });
+
+    stage?.addEventListener('touchstart', (event) => {
+        touchStartX = event.changedTouches[0]?.clientX ?? null;
+    }, { passive: true });
+
+    stage?.addEventListener('touchend', (event) => {
+        if (touchStartX === null) {
+            return;
+        }
+
+        const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
+        const deltaX = touchEndX - touchStartX;
+        touchStartX = null;
+
+        if (Math.abs(deltaX) < 40) {
+            return;
+        }
+
+        move(deltaX < 0 ? 'next' : 'prev');
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (!modal.classList.contains('is-open')) {
+            return;
+        }
+
+        if (event.target instanceof HTMLElement && event.target.matches('input, textarea, select')) {
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            close();
+            return;
+        }
+
+        if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            move('prev');
+        }
+
+        if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            move('next');
+        }
+    });
+
+    return { open, close };
+};
+
+const initAboutContactsModal = () => {
+    const modal = document.getElementById('aboutContactModal');
+
+    if (!modal) {
+        return;
+    }
+
+    const openModal = () => {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        syncOverlayState();
+    };
+
+    const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        syncOverlayState();
+    };
+
+    document.querySelectorAll('[data-open-about-contacts]').forEach((button) => {
+        button.addEventListener('click', openModal);
+    });
+
+    modal.querySelectorAll('[data-close-about-contacts]').forEach((element) => {
+        element.addEventListener('click', closeModal);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+            closeModal();
+        }
+    });
+};
+
+const initRelatedPaintingCards = () => {
+    document.querySelectorAll('[data-related-painting-card]').forEach((card) => {
+        const open = () => {
+            const targetUrl = card.dataset.relatedUrl;
+
+            if (!targetUrl) {
+                return;
+            }
+
+            window.location.href = targetUrl;
+        };
+
+        card.addEventListener('click', (event) => {
+            if (event.target.closest('form, a, button, input, textarea, select')) {
+                return;
+            }
+
+            open();
+        });
+
+        card.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                open();
+            }
+        });
     });
 };
 
@@ -348,6 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const imageLightbox = initImageLightbox();
     const paintingGallery = document.querySelector('[data-painting-gallery]');
 
     if (paintingGallery) {
@@ -410,9 +717,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         prevButton?.addEventListener('click', () => movePaintingGallery('prev'));
         nextButton?.addEventListener('click', () => movePaintingGallery('next'));
+        stage?.addEventListener('click', (event) => {
+            if (event.target.closest('[data-painting-prev], [data-painting-next]')) {
+                return;
+            }
+
+            const images = thumbs.length > 0
+                ? thumbs.map((thumb) => thumb.dataset.imageUrl).filter(Boolean)
+                : [stage.dataset.imageUrl].filter(Boolean);
+
+            imageLightbox?.open(images, currentIndex, stage.getAttribute('aria-label') || '');
+        });
 
         document.addEventListener('keydown', (event) => {
-            if (!paintingGallery.isConnected || document.body.dataset.page !== 'painting') {
+            if (!paintingGallery.isConnected || document.body.dataset.page !== 'painting' || document.getElementById('imageLightbox')?.classList.contains('is-open')) {
                 return;
             }
 
@@ -433,6 +751,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initPreferenceMenus();
-    initCatalogModal();
+    initMobileNav();
+    initCatalogModal(imageLightbox);
+    initAboutContactsModal();
+    initRelatedPaintingCards();
     applyTranslations();
 });

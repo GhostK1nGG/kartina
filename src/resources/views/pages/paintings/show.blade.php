@@ -16,6 +16,7 @@
                     <div
                         class="painting-detail-media"
                         data-painting-stage
+                        data-image-url="{{ $galleryImages->first() }}"
                         style="background-image:url('{{ $galleryImages->first() }}')"
                         aria-label="{{ $painting->title }}"
                     >
@@ -117,7 +118,13 @@
 
                     <div class="placeholder-paintings-grid related-paintings-grid">
                         @foreach ($relatedPaintings as $relatedPainting)
-                            <article class="placeholder-painting-card catalog-card reveal is-visible">
+                            <article
+                                class="placeholder-painting-card catalog-card reveal is-visible"
+                                tabindex="0"
+                                role="link"
+                                data-related-painting-card
+                                data-related-url="{{ route('paintings.show', $relatedPainting->slug) }}"
+                            >
                                 <div class="placeholder-painting-media" style="background-image:url('{{ $relatedPainting->main_image_url }}')"></div>
 
                                 <div class="placeholder-painting-copy">

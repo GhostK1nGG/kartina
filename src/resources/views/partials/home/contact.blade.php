@@ -1,14 +1,20 @@
 <section>
     <div class="container quote-layout">
-        <article class="quote-card reveal tilt-card">
-            <small>{{ $contact['quote']['eyebrow'] }}</small>
-            <blockquote>{{ $contact['quote']['text'] }}</blockquote>
-            <div class="quote-meta">
-                <div class="avatar"></div>
-                <div>
-                    <strong>{{ $contact['quote']['author'] }}</strong>
-                    <span>{{ $contact['quote']['role'] }}</span>
-                </div>
+        <article class="quote-card contact-process-card reveal tilt-card">
+            <small>{{ $contact['process']['eyebrow'] }}</small>
+            <h3>{{ $contact['process']['title'] }}</h3>
+            <p class="contact-process-lead">{{ $contact['process']['description'] }}</p>
+
+            <div class="contact-process-steps">
+                @foreach ($contact['process']['steps'] as $step)
+                    <article class="contact-process-step">
+                        <div class="contact-process-index">{{ $step['index'] }}</div>
+                        <div class="contact-process-copy">
+                            <h4>{{ $step['title'] }}</h4>
+                            <p>{{ $step['description'] }}</p>
+                        </div>
+                    </article>
+                @endforeach
             </div>
         </article>
 
@@ -18,6 +24,16 @@
                     <small>{{ $contact['form']['eyebrow'] }}</small>
                     <h3>{{ $contact['form']['front_title'] }}</h3>
                     <p>{{ $contact['form']['front_description'] }}</p>
+
+                    <div class="contact-checklist">
+                        <span>{{ $contact['form']['front_list_label'] }}</span>
+                        <ul>
+                            @foreach ($contact['form']['front_list'] as $item)
+                                <li>{{ $item }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+
                     <div class="contact-cta">
                         <button class="button" type="button" id="flipContactBtn">{{ $contact['form']['front_button'] }}</button>
                     </div>

@@ -12,15 +12,17 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class PaintingResource extends Resource
@@ -90,7 +92,7 @@ class PaintingResource extends Resource
                             ->helperText('На главной странице можно отметить не больше 5 картин.')
                             ->rules([
                                 fn (?Painting $record): \Closure => function (string $attribute, $value, \Closure $fail) use ($record) {
-                                    if (!$value) {
+                                    if (! $value) {
                                         return;
                                     }
 
@@ -162,12 +164,36 @@ class PaintingResource extends Resource
                 TextColumn::make('year')
                     ->label('Год')
                     ->sortable(),
-                IconColumn::make('is_active')
-                    ->label('На сайте')
-                    ->boolean(),
-                IconColumn::make('is_featured')
-                    ->label('На главной')
-                    ->boolean(),
+                ToggleColumn::make('is_active')
+                    ->label(new HtmlString('<span title="Показывать картину на публичном сайте. Если выключено, работа останется доступной только в админке." style="cursor: help;">На сайте</span>')),
+                ToggleColumn::make('is_featured')
+                    ->label(new HtmlString('<span title="Показывать картину в подборках на главной странице. Одновременно можно отметить не больше 5 работ." style="cursor: help;">На главной</span>'))
+                    ->updateStateUsing(function (Painting $record, bool $state): bool {
+                        if (! $state) {
+                            $record->update(['is_featured' => false]);
+
+                            return false;
+                        }
+
+                        $featuredCount = Painting::query()
+                            ->where('is_featured', true)
+                            ->whereKeyNot($record->getKey())
+                            ->count();
+
+                        if ($featuredCount >= 5) {
+                            Notification::make()
+                                ->title('Лимит главной страницы достигнут')
+                                ->body('На главной уже выбрано 5 картин. Сними отметку с одной из текущих, чтобы выбрать новую.')
+                                ->danger()
+                                ->send();
+
+                            return (bool) $record->is_featured;
+                        }
+
+                        $record->update(['is_featured' => true]);
+
+                        return true;
+                    }),
             ])
             ->filters([
                 SelectFilter::make('category')

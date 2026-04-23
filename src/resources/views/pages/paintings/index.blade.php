@@ -31,7 +31,6 @@
         <div class="container">
             <div class="section-head reveal is-visible">
                 <h2>{{ __('site.catalog.heading') }}</h2>
-                <p>{{ __('site.catalog.lead') }}</p>
             </div>
 
             <form class="catalog-filters reveal is-visible" method="GET" action="{{ route('paintings.index') }}">

@@ -1,11 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $reviewFormTitle = app()->getLocale() === 'en'
+            ? 'Share Your Impression'
+            : 'Поделитесь впечатлением';
+
+        $reviewFormDescription = app()->getLocale() === 'en'
+            ? 'Tell us what stayed with you after meeting the work. A warm, sincere review helps other collectors feel the atmosphere before they make their choice.'
+            : 'Расскажите, что вы почувствовали после знакомства с работой. Тёплый и искренний отзыв помогает другим людям почувствовать атмосферу картин ещё до покупки.';
+    @endphp
+
     <section class="placeholder-page reviews-page">
         <div class="container">
             <div class="section-head reveal is-visible">
                 <h2>{{ __('site.reviews.heading') }}</h2>
-                <p>{{ __('site.reviews.lead') }}</p>
             </div>
 
             @if (session('review_success'))
@@ -50,9 +59,8 @@
 
                 <aside class="form-page-shell review-form-shell reveal is-visible">
                     <div class="form-page-copy">
-                        <small>{{ __('site.reviews.form.eyebrow') }}</small>
-                        <h1>{{ __('site.reviews.form.title') }}</h1>
-                        <p>{{ __('site.reviews.form.description') }}</p>
+                        <h1>{{ $reviewFormTitle }}</h1>
+                        <p>{{ $reviewFormDescription }}</p>
                     </div>
 
                     <form class="form-page-form" method="POST" action="{{ route('reviews.store') }}" enctype="multipart/form-data">
@@ -70,7 +78,7 @@
                         <select class="field" name="rating">
                             <option value="">{{ __('site.reviews.form.fields.rating') }}</option>
                             @for ($rating = 5; $rating >= 1; $rating--)
-                                <option value="{{ $rating }}" @selected((string) old('rating') === (string) $rating)>{{ __('site.reviews.form.rating_option', ['rating' => $rating]) }}</option>
+                                <option value="{{ $rating }}" @selected((string) old('rating') === (string) $rating)>{{ $rating }} ⭐</option>
                             @endfor
                         </select>
                         @error('rating')

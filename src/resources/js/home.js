@@ -76,6 +76,47 @@ const initHomePage = () => {
         });
     }
 
+    document.querySelectorAll('[data-widget-scroll]').forEach((scrollArea) => {
+        const cards = Array.from(scrollArea.querySelectorAll('[data-widget-card]'));
+        const currentCounter = scrollArea.closest('.hero-widget')?.querySelector('[data-widget-current]');
+
+        if (cards.length === 0 || !currentCounter) {
+            return;
+        }
+
+        let rafId = null;
+
+        const updateWidgetCounter = () => {
+            rafId = null;
+
+            const activeIndex = cards.reduce((closestIndex, card, index) => {
+                const previousCard = cards[closestIndex];
+                const previousDistance = Math.abs(previousCard.offsetTop - scrollArea.scrollTop - 20);
+                const currentDistance = Math.abs(card.offsetTop - scrollArea.scrollTop - 20);
+
+                return currentDistance < previousDistance ? index : closestIndex;
+            }, 0);
+
+            currentCounter.textContent = String(activeIndex + 1).padStart(2, '0');
+
+            cards.forEach((card, index) => {
+                card.classList.toggle('is-active', index === activeIndex);
+            });
+        };
+
+        const scheduleWidgetCounter = () => {
+            if (rafId !== null) {
+                return;
+            }
+
+            rafId = window.requestAnimationFrame(updateWidgetCounter);
+        };
+
+        scrollArea.addEventListener('scroll', scheduleWidgetCounter, { passive: true });
+        window.addEventListener('resize', scheduleWidgetCounter);
+        updateWidgetCounter();
+    });
+
     document.querySelectorAll('.flip-toggle').forEach((card) => {
         const toggle = () => {
             card.classList.toggle('is-flipped');

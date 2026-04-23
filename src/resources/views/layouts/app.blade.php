@@ -21,6 +21,7 @@
             @yield('content')
         </main>
 
+        @include('partials.layout.image-lightbox')
         @include('partials.layout.footer')
     </div>
 </body>

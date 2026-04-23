@@ -69,10 +69,14 @@ class HomeController extends Controller
             'seoTitle' => __('site.meta.home.title'),
             'seoDescription' => __('site.meta.home.description'),
             'hero' => [
-                'eyebrow' => __('site.home.hero.eyebrow'),
-                'title' => __('site.home.hero.title'),
-                'description' => __('site.home.hero.description'),
-                'metrics' => trans('site.home.hero.metrics'),
+                'eyebrow' => null,
+                'title' => app()->getLocale() === 'en'
+                    ? 'Paintings that make a room feel rare, intimate, and unforgettable.'
+                    : 'Картины, которые делают пространство редким, живым и незабываемым.',
+                'description' => app()->getLocale() === 'en'
+                    ? 'Original works for interiors with character: quiet luxury, inner light, and a visual presence you feel the moment you enter the room.'
+                    : 'Оригинальные работы для пространств с характером: тихая роскошь, внутренний свет и то самое ощущение, которое чувствуется сразу, как только вы входите в комнату.',
+                'metrics' => [],
                 'floating_cards' => [
                     [
                         'class' => 'large',
@@ -97,52 +101,40 @@ class HomeController extends Controller
                         'tag' => null,
                         'image' => $featuredPaintings->get(2)?->main_image_url ?? asset('assets/images/home/hero-soft-horizon.jpg'),
                     ],
+                    [
+                        'class' => 'mini',
+                        'title' => $featuredPaintings->get(3)?->title ?? __('site.home.hero.defaults.featured.title'),
+                        'subtitle' => $featuredPaintings->get(3)?->year ?? __('site.home.hero.defaults.collection.subtitle'),
+                        'tag' => null,
+                        'image' => $featuredPaintings->get(3)?->main_image_url ?? asset('assets/images/home/hero-night-bloom.jpg'),
+                    ],
                 ],
-                'note' => [
-                    'title' => __('site.home.hero.note.title'),
-                    'description' => __('site.home.hero.note.description'),
-                ],
+                'note' => app()->getLocale() === 'en'
+                    ? [
+                        'title' => 'Chosen with intention',
+                        'description' => 'Each work is created to become the emotional center of the space, not just a decorative detail.',
+                    ]
+                    : [
+                        'title' => 'Выбрано с намерением',
+                        'description' => 'Каждая работа создаётся не как декор, а как эмоциональный центр пространства.',
+                    ],
             ],
-            'concept' => [
-                'heading' => __('site.home.concept.heading'),
-                'description' => __('site.home.concept.description'),
-                'panel' => [
-                    'eyebrow' => __('site.home.concept.panel.eyebrow'),
-                    'title' => __('site.home.concept.panel.title'),
-                    'description' => __('site.home.concept.panel.description'),
-                    'mini_cards' => trans('site.home.concept.panel.mini_cards'),
-                ],
-                'features' => trans('site.home.concept.features'),
-            ],
+            'concept' => $this->conceptContent(),
             'gallery' => [
                 'heading' => __('site.home.gallery.heading'),
-                'description' => __('site.home.gallery.description'),
+                'description' => null,
                 'paintings' => $galleryPaintings,
+                'flip_label' => app()->getLocale() === 'en' ? 'tap to flip' : 'нажмите, чтобы открыть',
+                'catalog_cta_label' => app()->getLocale() === 'en' ? 'More Works in the Catalog' : 'Больше работ в каталоге',
             ],
             'reviewsShowcase' => [
                 'heading' => __('site.home.reviews.heading'),
-                'description' => __('site.home.reviews.description'),
+                'description' => null,
                 'items' => $publishedReviews,
                 'cta_label' => __('site.home.reviews.cta'),
                 'cta_url' => route('reviews'),
             ],
-            'contact' => [
-                'quote' => [
-                    'eyebrow' => __('site.home.contact.quote.eyebrow'),
-                    'text' => __('site.home.contact.quote.text'),
-                    'author' => __('site.home.contact.quote.author'),
-                    'role' => __('site.home.contact.quote.role'),
-                ],
-                'form' => [
-                    'eyebrow' => __('site.home.contact.form.eyebrow'),
-                    'front_title' => __('site.home.contact.form.front_title'),
-                    'front_description' => __('site.home.contact.form.front_description'),
-                    'front_button' => __('site.home.contact.form.front_button'),
-                    'back_title' => __('site.home.contact.form.back_title'),
-                    'back_description' => __('site.home.contact.form.back_description'),
-                    'submit_label' => __('site.home.contact.form.submit_label'),
-                ],
-            ],
+            'contact' => $this->contactContent(),
         ]);
     }
 
@@ -156,5 +148,175 @@ class HomeController extends Controller
         $translated = __($key);
 
         return $translated === $key ? $fallback : $translated;
+    }
+
+    private function conceptContent(): array
+    {
+        if (app()->getLocale() === 'en') {
+            return [
+                'heading' => 'Dialogue with Space',
+                'description' => null,
+                'panel' => [
+                    'eyebrow' => 'for your space',
+                    'lead' => 'These paintings resonate with people who feel more deeply than they usually say out loud, and who value silence, beauty, symbols, and inner light.',
+                    'title' => 'A painting becomes a point of gravity for the heart.',
+                    'description' => 'It does not argue with the interior. Instead, it gathers atmosphere around itself: quiet, softened light, symbols, and a sense of inner presence.',
+                    'items' => [
+                        'For people who seek tenderness rather than noise.',
+                        'For interiors where atmosphere matters as much as furniture.',
+                        'For rooms that are meant to restore, inspire, and hold memory.',
+                    ],
+                ],
+                'features' => [
+                    [
+                        'eyebrow' => 'space',
+                        'title' => 'Creative Studios',
+                        'description' => 'Works that hold concentration, imagination, and the feeling of a private inner world.',
+                    ],
+                    [
+                        'eyebrow' => 'space',
+                        'title' => 'Light Living Rooms',
+                        'description' => 'A calm focal point that brings softness and symbolic depth into everyday life.',
+                    ],
+                    [
+                        'eyebrow' => 'space',
+                        'title' => 'Bedrooms and Private Rooms',
+                        'description' => 'Paintings that belong near silence, personal rituals, and emotional intimacy.',
+                    ],
+                    [
+                        'eyebrow' => 'space',
+                        'title' => 'Meditation and Recovery Spaces',
+                        'description' => 'Images that support slowing down, practice, restoration, and inward attention.',
+                    ],
+                ],
+            ];
+        }
+
+        return [
+            'heading' => 'Диалог с пространством',
+            'description' => null,
+            'panel' => [
+                'eyebrow' => 'для вашего пространства',
+                'lead' => 'Мои картины находят отклик у людей, которые чувствуют глубже, чем принято говорить вслух, и ценят тишину, красоту, символы и внутренний свет.',
+                'title' => 'Картина становится точкой притяжения для сердца.',
+                'description' => 'Она не спорит с интерьером, а собирает вокруг себя атмосферу: мягкий свет, тишину, внутреннее присутствие и ощущение личного смысла.',
+                'items' => [
+                    'Для тех, кто выбирает не шумный акцент, а глубокий эмоциональный отклик.',
+                    'Для пространств, где важна не только красота, но и состояние.',
+                    'Для людей, которым близки символы, свет и тихая внутренняя поэзия.',
+                ],
+            ],
+            'features' => [
+                [
+                    'eyebrow' => 'пространство',
+                    'title' => 'Творческие студии',
+                    'description' => 'Там, где важны вдохновение, сосредоточенность и чувство собственного внутреннего мира.',
+                ],
+                [
+                    'eyebrow' => 'пространство',
+                    'title' => 'Светлые гостиные',
+                    'description' => 'Картина даёт мягкую точку фокуса и делает атмосферу дома более тонкой и живой.',
+                ],
+                [
+                    'eyebrow' => 'пространство',
+                    'title' => 'Спальни и личные комнаты',
+                    'description' => 'Работы особенно естественно раскрываются рядом с тишиной, личными ритуалами и интимным пространством.',
+                ],
+                [
+                    'eyebrow' => 'пространство',
+                    'title' => 'Места для практик и восстановления',
+                    'description' => 'Они хорошо звучат там, где нужны замедление, медитация, отдых и возвращение к себе.',
+                ],
+            ],
+        ];
+    }
+
+    private function contactContent(): array
+    {
+        if (app()->getLocale() === 'en') {
+            return [
+                'process' => [
+                    'eyebrow' => 'how we create together',
+                    'title' => 'From a feeling to a finished painting',
+                    'description' => 'The process stays personal and transparent: we move from mood and symbols to sketches, composition, and the final work, and I can share intermediate stages along the way.',
+                    'steps' => [
+                        [
+                            'index' => '01',
+                            'title' => 'Shaping the idea',
+                            'description' => 'You share your idea, mood, or story. We discuss imagery, symbols, color, and atmosphere. I prepare several sketch directions and, after approval, begin the painting.',
+                        ],
+                        [
+                            'index' => '02',
+                            'title' => 'Conversation and start',
+                            'description' => 'To begin, write through Instagram, email, or the form on the site. Tell me the idea or request, desired size, and timeline if it matters. Then I reply with clarifying questions, we agree on format and cost, and start the work.',
+                        ],
+                    ],
+                ],
+                'form' => [
+                    'eyebrow' => 'project request',
+                    'front_title' => 'Tell me the mood, image, or story',
+                    'front_description' => 'A good project starts with a feeling. You can describe an image, a symbol, a palette, or simply the atmosphere you want the painting to hold.',
+                    'front_list_label' => 'To start, include:',
+                    'front_list' => [
+                        'the idea or request',
+                        'the desired size',
+                        'timeline, if it matters',
+                    ],
+                    'front_button' => 'Open Form',
+                    'back_title' => 'Send a request',
+                    'back_description' => 'You can begin through Instagram, email, or directly through the form below. After the message I respond with clarifying questions, we discuss the details, agree on format and cost, and begin creating the painting.',
+                    'back_list_label' => 'After your request:',
+                    'back_list' => [
+                        'I reply with clarifications',
+                        'we discuss the details',
+                        'we agree on format and cost',
+                        'and then begin the painting',
+                    ],
+                    'submit_label' => 'Send Request',
+                ],
+            ];
+        }
+
+        return [
+            'process' => [
+                'eyebrow' => 'как мы создаём проект вместе',
+                'title' => 'От чувства и идеи к готовой картине',
+                'description' => 'Процесс остаётся личным и понятным: мы идём от настроения, символов и истории к эскизам, композиции и готовой работе, а по пути я могу делиться промежуточными этапами.',
+                'steps' => [
+                    [
+                        'index' => '01',
+                        'title' => 'Воплощение идеи',
+                        'description' => 'Вы делитесь своей идеей, настроением или историей. Мы обсуждаем образы, символы, цвета и ощущения. Я предлагаю художественное видение и несколько эскизных направлений, а после согласования начинаю работу над картиной.',
+                    ],
+                    [
+                        'index' => '02',
+                        'title' => 'Сотрудничество и старт',
+                        'description' => 'Чтобы начать, напишите мне в Instagram, на email или через форму на сайте. Укажите идею или запрос, желаемый размер и сроки, если они важны. После этого я отвечу с уточнениями, мы согласуем формат и стоимость и начнём создание картины.',
+                    ],
+                ],
+            ],
+            'form' => [
+                'eyebrow' => 'заявка на картину',
+                'front_title' => 'Расскажите идею, настроение или историю',
+                'front_description' => 'Хороший проект начинается с чувства. Можно описать образ, символ, цветовую атмосферу или просто состояние, которое вы хотите сохранить в картине.',
+                'front_list_label' => 'Чтобы начать, укажите:',
+                'front_list' => [
+                    'идею или запрос',
+                    'желаемый размер',
+                    'сроки, если они важны',
+                ],
+                'front_button' => 'Открыть форму',
+                'back_title' => 'Оставить заявку',
+                'back_description' => 'Можно начать через Instagram, email или форму ниже. После сообщения я вернусь с уточнениями, мы обсудим детали, согласуем формат и стоимость, а затем перейдём к созданию работы.',
+                'back_list_label' => 'После вашей заявки:',
+                'back_list' => [
+                    'я отвечу с уточнениями',
+                    'мы обсудим детали',
+                    'согласуем формат и стоимость',
+                    'и начнём создание картины',
+                ],
+                'submit_label' => 'Отправить запрос',
+            ],
+        ];
     }
 }

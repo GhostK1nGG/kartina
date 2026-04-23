@@ -5,7 +5,6 @@
         <div class="container">
             <div class="section-head reveal is-visible">
                 <h2>{{ __('site.cart.heading') }}</h2>
-                <p>{{ __('site.cart.lead') }}</p>
             </div>
 
             @if (session('order_success'))

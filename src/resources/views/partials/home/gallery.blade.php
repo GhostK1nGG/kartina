@@ -2,7 +2,9 @@
     <div class="container">
         <div class="section-head reveal">
             <h2>{{ $gallery['heading'] }}</h2>
-            <p>{{ $gallery['description'] }}</p>
+            @if (!empty($gallery['description']))
+                <p>{{ $gallery['description'] }}</p>
+            @endif
         </div>
 
         @if (count($gallery['paintings']) > 0)
@@ -32,7 +34,7 @@
                                             <h3>{{ $painting['title'] }}</h3>
                                             <p>{{ $painting['excerpt'] }}</p>
                                         </div>
-                                        <span class="gallery-tag">{{ __('site.home.gallery.tap_to_flip') }}</span>
+                                        <span class="gallery-tag">{{ $gallery['flip_label'] }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -50,6 +52,10 @@
                         <script class="gallery-payload" type="application/json">{!! json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
                     </article>
                 @endforeach
+            </div>
+
+            <div class="gallery-footer reveal is-visible">
+                <a class="button" href="{{ route('paintings.index') }}">{{ $gallery['catalog_cta_label'] }}</a>
             </div>
         @else
             <div class="placeholder-shell reveal is-visible">

@@ -1,14 +1,18 @@
 <footer class="footer">
     <div class="container footer-shell">
-        <span>{{ config('app.name') }} · {{ now()->year }}</span>
         <span>
-            <a href="mailto:{{ config('services.public_contacts.email', 'trubchaninov2005@mail.ru') }}">{{ config('services.public_contacts.email', 'hello@example.com') }}</a>
-            ·
-            <a href="{{ config('services.public_contacts.telegram', 'https://t.me/Ghost_K1nG') }}" target="_blank" rel="noreferrer">{{ __('site.footer.telegram') }}</a>
-            ·
-            <a href="{{ config('services.public_contacts.vk', 'https://vk.com/example') }}" target="_blank" rel="noreferrer">{{ __('site.footer.vk') }}</a>
-            ·
-            <a href="{{ config('services.public_contacts.instagram', 'https://instagram.com/example') }}" target="_blank" rel="noreferrer">{{ __('site.footer.instagram') }}</a>
+            <a href="https://vk.com/ghost_k1ng" target="_blank" rel="noopener noreferrer">trubchaninov</a>
+            &middot;
+            {{ now()->year }}
+        </span>
+        <span>
+            <a href="mailto:Karulin.cherry@yahoo.com">Karulin.cherry@yahoo.com</a>
+            &middot;
+            <a href="https://t.me/Ka_i_Na" target="_blank" rel="noopener noreferrer">Telegram</a>
+            &middot;
+            <a href="https://vk.com/heavenly_goddess" target="_blank" rel="noopener noreferrer">VK</a>
+            &middot;
+            <a href="https://www.instagram.com/kerri_nessa/" target="_blank" rel="noopener noreferrer">Instagram</a>
         </span>
     </div>
 </footer>

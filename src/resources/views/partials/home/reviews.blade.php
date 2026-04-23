@@ -2,7 +2,9 @@
     <div class="container">
         <div class="section-head reveal">
             <h2>{{ $reviewsShowcase['heading'] }}</h2>
-            <p>{{ $reviewsShowcase['description'] }}</p>
+            @if (!empty($reviewsShowcase['description']))
+                <p>{{ $reviewsShowcase['description'] }}</p>
+            @endif
         </div>
 
         @if (count($reviewsShowcase['items']) > 0)
