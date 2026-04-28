@@ -61,10 +61,8 @@
             <div class="placeholder-shell reveal is-visible">
                 <small>{{ __('site.home.gallery.eyebrow') }}</small>
                 <h1>{{ __('site.home.gallery.empty.title') }}</h1>
-                <p>{{ __('site.home.gallery.empty.description') }}</p>
                 <div class="placeholder-actions">
                     <a class="button" href="{{ route('paintings.index') }}">{{ __('site.home.gallery.empty.catalog') }}</a>
-                    <a class="ghost-button" href="/admin/paintings">{{ __('site.home.gallery.empty.admin') }}</a>
                 </div>
             </div>
         @endif
