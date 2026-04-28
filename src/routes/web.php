@@ -18,7 +18,7 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('/locale/{locale}', function (Request $request, string $locale) {
     abort_unless(in_array($locale, ['ru', 'en'], true), 404);
 
-    $request->session()->put('locale', $locale);
+    $request->session()->put('locale_preference', $locale);
 
     $redirect = (string) $request->query('redirect', route('home'));
 
