@@ -16,10 +16,22 @@
             </span>
         </a>
 
-        <button class="nav-mobile-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="siteNavPanel" aria-label="{{ __('site.nav.label') }}">
-            <span></span>
-            <span></span>
-            <span></span>
+        <button
+            class="nav-mobile-toggle"
+            type="button"
+            data-nav-toggle
+            data-nav-label-closed="{{ app()->getLocale() === 'en' ? 'Menu' : 'Меню' }}"
+            data-nav-label-open="{{ app()->getLocale() === 'en' ? 'Close' : 'Закрыть' }}"
+            aria-expanded="false"
+            aria-controls="siteNavPanel"
+            aria-label="{{ app()->getLocale() === 'en' ? 'Open menu' : 'Открыть меню' }}"
+        >
+            <span class="nav-mobile-icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+            <span class="nav-mobile-label" data-nav-label>{{ app()->getLocale() === 'en' ? 'Menu' : 'Меню' }}</span>
         </button>
 
         <div class="nav-panel" id="siteNavPanel" data-nav-panel>

@@ -160,16 +160,28 @@ const initMobileNav = () => {
     const navShell = document.querySelector('[data-nav-shell]');
     const toggle = navShell?.querySelector('[data-nav-toggle]');
     const panel = navShell?.querySelector('[data-nav-panel]');
+    const toggleLabel = toggle?.querySelector('[data-nav-label]');
 
     if (!navShell || !toggle || !panel) {
         return;
     }
 
     const mobileBreakpoint = window.matchMedia('(max-width: 820px)');
+    const closedLabel = toggle.dataset.navLabelClosed || '';
+    const openLabel = toggle.dataset.navLabelOpen || closedLabel;
+
+    const syncToggleLabel = (isOpen) => {
+        if (toggleLabel) {
+            toggleLabel.textContent = isOpen ? openLabel : closedLabel;
+        }
+
+        toggle.setAttribute('aria-label', isOpen ? openLabel : closedLabel);
+    };
 
     const closeNav = () => {
         navShell.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
+        syncToggleLabel(false);
     };
 
     const toggleNav = () => {
@@ -177,7 +189,10 @@ const initMobileNav = () => {
 
         navShell.classList.toggle('is-open', willOpen);
         toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        syncToggleLabel(willOpen);
     };
+
+    syncToggleLabel(false);
 
     toggle.addEventListener('click', () => {
         if (!mobileBreakpoint.matches) {

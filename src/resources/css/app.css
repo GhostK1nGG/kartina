@@ -170,12 +170,13 @@ body::before{
 .nav-links a:hover{background:rgba(255,255,255,.5);color:var(--text);transform:translateY(-1px)}
 .nav-actions{display:flex;gap:12px;align-items:center}
 .nav-panel{display:contents}
-.nav-mobile-toggle{display:none;align-items:center;justify-content:center;width:46px;height:46px;padding:0;border:1px solid rgba(176,140,88,.18);border-radius:50%;background:rgba(255,255,255,.68);color:var(--text);box-shadow:0 10px 30px rgba(160,124,74,.12);cursor:pointer}
-.nav-mobile-toggle span{display:block;width:18px;height:1.8px;border-radius:999px;background:currentColor;transition:transform .24s ease,opacity .24s ease}
-.nav-mobile-toggle span + span{margin-top:4px}
-.nav-shell.is-open .nav-mobile-toggle span:nth-child(1){transform:translateY(5.8px) rotate(45deg)}
-.nav-shell.is-open .nav-mobile-toggle span:nth-child(2){opacity:0}
-.nav-shell.is-open .nav-mobile-toggle span:nth-child(3){transform:translateY(-5.8px) rotate(-45deg)}
+.nav-mobile-toggle{display:none;align-items:center;justify-content:center;gap:10px;min-width:112px;height:46px;padding:0 16px;border:1px solid rgba(176,140,88,.18);border-radius:999px;background:rgba(255,255,255,.78);color:var(--text);box-shadow:0 10px 30px rgba(160,124,74,.12);cursor:pointer}
+.nav-mobile-icon{display:grid;gap:4px}
+.nav-mobile-icon span{display:block;width:18px;height:1.8px;border-radius:999px;background:currentColor;transition:transform .24s ease,opacity .24s ease}
+.nav-mobile-label{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.nav-shell.is-open .nav-mobile-icon span:nth-child(1){transform:translateY(5.8px) rotate(45deg)}
+.nav-shell.is-open .nav-mobile-icon span:nth-child(2){opacity:0}
+.nav-shell.is-open .nav-mobile-icon span:nth-child(3){transform:translateY(-5.8px) rotate(-45deg)}
 .nav-pref-group{position:relative}
 .nav-pref-trigger{min-width:138px;justify-content:flex-start;padding-right:16px}
 .nav-pref-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;color:var(--muted)}
@@ -777,10 +778,11 @@ textarea.field{min-height:170px;resize:vertical}
   .nav-pref-group,.nav-pref-trigger{width:100%}
   .nav-pref-menu{left:0;right:0;min-width:0}
   .ghost-button,.button{justify-content:center}
-  .hero{min-height:auto;align-items:flex-start;padding:22px 0 52px}
-  .hero-copy{text-align:left}
-  .hero-copy p{max-width:100%;margin-top:20px;font-size:18px}
-  .hero-actions{gap:10px;margin-top:26px}
+  .hero{min-height:auto;align-items:flex-start;padding:34px 0 52px}
+  .hero-copy{text-align:center}
+  .hero-copy h1{max-width:12ch;margin:0 auto;font-size:clamp(40px,12vw,68px);line-height:.94;text-wrap:balance}
+  .hero-copy p{max-width:32ch;margin:18px auto 0;font-size:17px;line-height:1.6}
+  .hero-actions{justify-content:center;gap:10px;margin-top:24px}
   .hero-actions .button,.hero-actions .ghost-button{min-height:48px}
   .hero-metrics,.feature-grid,.process,.placeholder-paintings-grid,.about-principles-grid,.about-facts-grid{grid-template-columns:1fr}
   .catalog-filters-grid,.painting-gallery-grid,.painting-meta-grid{grid-template-columns:1fr}
@@ -819,9 +821,9 @@ textarea.field{min-height:170px;resize:vertical}
   .hero-cloudbank-front{width:92vw;left:-4vw;bottom:2vh}
   .hero-cloudmist-left,.hero-cloudmist-right{opacity:.22}
   .hero-beam{opacity:.3}
-  .hero-grid{gap:32px}
-  .hero-device{width:100%;min-height:auto;justify-content:center;align-items:center;justify-self:center;margin:0 auto;padding:0 14px;overflow:visible}
-  .hero-phone{width:var(--hero-phone-mobile-width, min(calc(100% - 40px), 342px));max-width:100%;height:auto;aspect-ratio:362 / 780;flex-basis:auto;margin:0 auto;padding:0;transform:none}
+  .hero-grid{gap:28px}
+  .hero-device{width:100%;min-height:auto;justify-content:center;align-items:center;justify-self:center;margin:0 auto;padding:0 18px;overflow:visible}
+  .hero-phone{width:var(--hero-phone-mobile-width, min(calc(100% - 52px), 320px));max-width:100%;height:auto;aspect-ratio:362 / 780;flex-basis:auto;margin:0 auto;padding:0;transform:none}
   .hero-phone-screen{min-height:0}
   .hero-widget{inset:68px 18px 18px}
   .hero-widget-card-compact h3{font-size:22px}
@@ -849,23 +851,24 @@ textarea.field{min-height:170px;resize:vertical}
   .brand{gap:10px;justify-content:center}
   .brand-wordmark{display:none}
   .brand-mark.is-monogram{min-width:48px;height:40px;font-size:19px}
-  .nav-mobile-toggle{width:42px;height:42px}
+  .nav-mobile-toggle{min-width:108px;height:44px;padding:0 14px;gap:8px}
+  .nav-mobile-label{font-size:12px;letter-spacing:.1em}
   .nav-links{grid-template-columns:1fr}
   .nav-actions{grid-template-columns:1fr}
   .nav-pref-trigger,.nav-links a,.ghost-button,.button{min-height:48px}
   .nav-links a,.ghost-button,.button{font-size:15px}
-  .hero{padding:18px 0 46px}
+  .hero{padding:38px 0 46px}
   .hero-grid{gap:24px}
-  .hero-copy h1{font-size:clamp(44px,18vw,74px)}
-  .hero-copy p{font-size:16px;line-height:1.58}
+  .hero-copy h1{font-size:clamp(34px,13vw,52px);max-width:11ch}
+  .hero-copy p{max-width:30ch;font-size:15px;line-height:1.62}
   .eyebrow{margin-bottom:18px}
   .hero-atmosphere{inset:-4% -16% 6%}
   .hero-cloudbank-back,.hero-cloudbank-mid{width:92vw;height:40vw}
   .hero-cloudbank-front{width:118vw;height:42vw;left:-10vw;bottom:8vh;opacity:.48}
   .hero-cloudmist-left,.hero-cloudmist-right,.hero-cloudglow-bottom{display:none}
   .hero-beam{width:24vw;height:58vh;opacity:.24}
-  .hero-device{width:100%;min-height:auto;align-items:center;justify-content:center;justify-self:center;margin:0 auto;padding:0 10px;overflow:visible}
-  .hero-phone{width:var(--hero-phone-mobile-width, min(calc(100% - 32px), 316px));max-width:100%;height:auto;aspect-ratio:362 / 780;flex-basis:auto;margin:0 auto;padding:0;transform:none}
+  .hero-device{width:100%;min-height:auto;align-items:center;justify-content:center;justify-self:center;margin:0 auto;padding:0 16px;overflow:visible}
+  .hero-phone{width:var(--hero-phone-mobile-width, min(calc(100% - 48px), 292px));max-width:100%;height:auto;aspect-ratio:362 / 780;flex-basis:auto;margin:0 auto;padding:0;transform:none}
   .hero-phone-shell{padding:7px;border-radius:42px}
   .hero-phone-shell::before{border-radius:38px}
   .hero-phone-screen{min-height:0;padding:18px;border-radius:36px}
