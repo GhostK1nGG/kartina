@@ -762,8 +762,10 @@ textarea.field{min-height:170px;resize:vertical}
 }
 
 @media (min-width:1101px){
-  .hero-device{justify-content:flex-end;padding-right:40px}
-  .hero-phone{margin:0;transform:translateX(18px)}
+  .hero-grid{grid-template-columns:minmax(0,.9fr) minmax(360px,1.1fr);gap:64px}
+  .hero-copy h1{max-width:8ch}
+  .hero-device{justify-content:flex-end;padding-right:56px}
+  .hero-phone{margin:0;transform:translateX(32px)}
 }
 
 @media (max-width:820px){

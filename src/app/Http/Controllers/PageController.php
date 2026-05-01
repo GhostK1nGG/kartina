@@ -31,28 +31,6 @@ class PageController extends Controller
             ])
             ->all();
 
-        if ($works === []) {
-            $fallbackWorks = $aboutContent['fallback_works'];
-
-            $works = [
-                [
-                    ...$fallbackWorks[0],
-                    'image_url' => asset('assets/images/home/gallery-after-rain.jpg'),
-                    'url' => route('paintings.index'),
-                ],
-                [
-                    ...$fallbackWorks[1],
-                    'image_url' => asset('assets/images/home/gallery-ember-field.jpg'),
-                    'url' => route('paintings.index'),
-                ],
-                [
-                    ...$fallbackWorks[2],
-                    'image_url' => asset('assets/images/home/gallery-quiet-dust.jpg'),
-                    'url' => route('paintings.index'),
-                ],
-            ];
-        }
-
         return view('pages.about', [
             'pageKey' => 'about',
             'seoTitle' => __('site.meta.about.title'),

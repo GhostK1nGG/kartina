@@ -112,27 +112,29 @@
                 </article>
             </div>
 
-            <div class="section-head reveal is-visible">
-                <h2>{{ $about['works_heading'] }}</h2>
-                @if (!empty($about['works_description']))
-                    <p>{{ $about['works_description'] }}</p>
-                @endif
-            </div>
+            @if ($aboutWorks !== [])
+                <div class="section-head reveal is-visible">
+                    <h2>{{ $about['works_heading'] }}</h2>
+                    @if (!empty($about['works_description']))
+                        <p>{{ $about['works_description'] }}</p>
+                    @endif
+                </div>
 
-            <div class="placeholder-paintings-grid reveal is-visible">
-                @foreach ($aboutWorks as $work)
-                    <article class="placeholder-painting-card about-work-card">
-                        <div class="placeholder-painting-media" style="background-image:url('{{ $work['image_url'] }}')"></div>
+                <div class="placeholder-paintings-grid reveal is-visible">
+                    @foreach ($aboutWorks as $work)
+                        <article class="placeholder-painting-card about-work-card">
+                            <div class="placeholder-painting-media" style="background-image:url('{{ $work['image_url'] }}')"></div>
 
-                        <div class="placeholder-painting-copy">
-                            <small>{{ $work['subtitle'] }}</small>
-                            <h3>{{ $work['title'] }}</h3>
-                            <p>{{ $work['description'] }}</p>
-                            <a class="ghost-button" href="{{ $work['url'] }}">{{ $about['works_more'] }}</a>
-                        </div>
-                    </article>
-                @endforeach
-            </div>
+                            <div class="placeholder-painting-copy">
+                                <small>{{ $work['subtitle'] }}</small>
+                                <h3>{{ $work['title'] }}</h3>
+                                <p>{{ $work['description'] }}</p>
+                                <a class="ghost-button" href="{{ $work['url'] }}">{{ $about['works_more'] }}</a>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </section>
 
