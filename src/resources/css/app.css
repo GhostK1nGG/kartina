@@ -855,7 +855,7 @@ textarea.field{min-height:170px;resize:vertical}
   section{padding:56px 0}
   .topbar{top:6px;padding-top:8px}
   .nav-shell{padding:10px 12px;border-radius:24px;gap:10px}
-  .brand{gap:10px;justify-content:center}
+  .brand{gap:10px;justify-content:flex-start;justify-self:start}
   .brand-wordmark{display:none}
   .brand-mark.is-monogram{min-width:48px;height:40px;font-size:19px}
   .nav-mobile-toggle{min-width:108px;height:44px;padding:0 14px;gap:8px}
