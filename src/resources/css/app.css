@@ -867,7 +867,7 @@ textarea.field{min-height:170px;resize:vertical}
   .hero{padding:24px 0 44px}
   .hero-grid{gap:20px}
   .hero-copy h1{font-size:clamp(30px,11vw,42px);max-width:8ch}
-  .hero-copy p{max-width:20ch;margin:16px auto 0;font-size:15px;line-height:1.62;text-align:center}
+  .hero-copy p{max-width:20ch;margin:16px auto 0;font-size:15px;line-height:1.62;text-align:justify;text-align-last:center;text-justify:inter-word}
   .eyebrow{margin-bottom:18px}
   .hero-atmosphere{inset:-4% -16% 6%}
   .hero-cloudbank-back,.hero-cloudbank-mid{width:92vw;height:40vw}
